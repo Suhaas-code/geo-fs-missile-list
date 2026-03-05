@@ -1,13 +1,16 @@
 // ==UserScript==
 // @name         GeoFS GMRP Missile List
-// @author         thesupremeguy
-// @version         v1.3
-// @description         A draggable box containing the GMRP missile list, updated to 2nd March 2026.
+// @namespace    https://github.com/Suhaas-code/geo-fs-missile-list/blob/main/missile-list.js
+// @author       thesupremeguy
+// @version      v1.4
+// @description  A draggable box containing the GMRP missile list.
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=geo-fs.com
 // @match        https://www.geo-fs.com/geofs.php*
 // @grant        none
 // ==/UserScript==
 
+// Small draggable box with missiles in alphabetical order
+// Press Right Control on your keyboard to hide it.
 
 (function () {
     "use strict";
@@ -40,13 +43,23 @@
         ["r73","FLARE"],["aa11","FLARE"],["archer","FLARE"]
     ];
 
-    data.sort((a, b) => a[0].localeCompare(b[0]));
+    /* -------- Always enforce alphabetical order -------- */
+    function getSortedData() {
+        return data.slice().sort((a, b) =>
+            a[0].toLowerCase().localeCompare(b[0].toLowerCase())
+        );
+    }
+
+    function renderList() {
+        const sorted = getSortedData();
+        return sorted.map(([m, c]) =>
+            `<span class="${c}">${m}</span>`
+        ).join(" ");
+    }
 
     const box = document.createElement("div");
     box.id = "cmDragBox";
-    box.innerHTML = data.map(([m, c]) =>
-        `<span class="${c}">${m}</span>`
-    ).join(" ");
+    box.innerHTML = renderList();
 
     const style = document.createElement("style");
     style.textContent = `
@@ -54,10 +67,10 @@
             position: fixed;
             bottom: 40px;
             right: 40px;
-            background: #000000;   /* opaque black */
+            background: #000000;
             color: white;
             padding: 7px 10px;
-            font-size: 12.5px;     /* slightly larger */
+            font-size: 12.5px;
             border-radius: 6px;
             width: 280px;
             line-height: 16px;
@@ -77,7 +90,7 @@
     document.body.appendChild(style);
     document.body.appendChild(box);
 
-    // --- Drag logic ---
+    /* -------- Drag logic -------- */
     let isDown = false;
     let offsetX = 0;
     let offsetY = 0;
@@ -100,4 +113,16 @@
         box.style.bottom = "auto";
         box.style.right = "auto";
     });
+
+    /* -------- Right CTRL toggle visibility -------- */
+    document.addEventListener("keydown", (e) => {
+        if (e.code === "ControlRight") {
+            if (box.style.display === "none") {
+                box.style.display = "block";
+            } else {
+                box.style.display = "none";
+            }
+        }
+    });
+
 })();
