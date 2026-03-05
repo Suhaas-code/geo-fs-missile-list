@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 // Small draggable box with missiles in alphabetical order
-// Press Right Control on your keyboard to hide it.
+// Press Right Control on your keyboard to hide it
 
 (function () {
     "use strict";
