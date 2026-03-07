@@ -15,7 +15,7 @@
 /* ---------- Customization ---------- */
 
 // 0 = opaque, 10 = fully transparent
-const transparency = 4;
+const transparency = 0;
 
 // Change this if you want a different logo
 const LOGO = "https://static.wikia.nocookie.net/geofsaviation/images/8/8d/Roundel_of_the_United_Arab_Emirates.svg.png";
